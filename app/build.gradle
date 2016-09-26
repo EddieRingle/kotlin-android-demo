@@ -1,0 +1,42 @@
+apply recipe("android-app")
+apply recipe("kotlin-android")
+
+android {
+  defaultConfig {
+    applicationId "io.ringle.pointer"
+    vectorDrawables.useSupportLibrary = true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  /*
+  * Shortcut closures
+  */
+  def androidCompile = { dep ->
+    compile dep
+    androidTestCompile dep
+  }
+  def androidKapt = { dep ->
+    kapt dep
+    kaptAndroidTest dep
+  }
+
+  androidCompile dep.android.appcompat
+  androidCompile dep.android.design
+  androidCompile dep.android.gridlayout
+  androidCompile dep.android.recyclerview
+  androidCompile dep.android.supportV4
+
+  androidCompile dep.dagger
+  androidKapt dep.apt.dagger
+  androidCompile dep.inject
+
+  androidTestCompile dep.test.junit
+}

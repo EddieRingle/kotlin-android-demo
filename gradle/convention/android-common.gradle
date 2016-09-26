@@ -1,0 +1,46 @@
+def hasAndroidConvention = plugins.hasPlugin("com.android.application") ||
+    plugins.hasPlugin("com.android.library")
+
+if (!hasAndroidConvention) {
+  throw new GradleException("android-common.gradle must follow application of 'com.android.application' or 'com.android.library' plugin")
+}
+
+apply plugin: "com.getkeepsafe.dexcount"
+
+android {
+  buildToolsVersion ver.android.buildTools
+  compileSdkVersion ver.android.sdk
+
+  defaultConfig {
+    minSdkVersion ver.android.min
+    targetSdkVersion ver.android.sdk
+    versionCode ver.appCode
+    versionName ver.app
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    debug {
+      testCoverageEnabled = true
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility ver.java
+    targetCompatibility ver.java
+  }
+
+  sourceSets {
+    def testCommonDir = "src/commonTest/java"
+    androidTest.java.srcDirs += testCommonDir
+    test.java.srcDirs += testCommonDir
+  }
+}
+
+dependencies {
+  compile dep.android.annotations
+  androidTestCompile dep.android.annotations
+  androidTestCompile dep.test.android.rules
+  androidTestCompile dep.test.android.runner
+}

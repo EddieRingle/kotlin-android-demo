@@ -1,0 +1,8 @@
+String root = buildscript.sourceFile.parent
+
+ext.recipe = { String name ->
+  { ObjectConfigurationAction it ->
+    String fname = name.endsWith(".gradle") ? name : "${name}.gradle"
+    it.from("${root}/convention/${fname}")
+  }
+}

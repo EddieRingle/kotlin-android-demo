@@ -1,0 +1,6 @@
+gradle.rootProject {
+  apply from: "${settingsDir}/gradle/common.gradle"
+  apply from: "${settingsDir}/gradle/conventions.gradle"
+}
+
+include ':app'

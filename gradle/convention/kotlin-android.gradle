@@ -1,0 +1,41 @@
+def hasAndroidConvention = plugins.hasPlugin("com.android.application") ||
+    plugins.hasPlugin("com.android.library")
+
+if (!hasAndroidConvention) {
+  throw new GradleException("kotlin-android.gradle must follow application of 'com.android.application' or 'com.android.library' plugin")
+}
+
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+
+android.sourceSets.each { set ->
+  set.java.srcDirs += "src/${set.name}/kotlin"
+}
+
+dependencies {
+  def allCompile = { dep ->
+    compile dep
+    testCompile dep
+    androidTestCompile dep
+  }
+  def allTestCompile = { dep ->
+    testCompile dep
+    androidTestCompile dep
+  }
+  def androidCompile = { dep ->
+    compile dep
+    androidTestCompile dep
+  }
+
+  allCompile dep.kotlin.stdlib
+
+  allTestCompile dep.kotlin.reflect
+  allTestCompile dep.test.amock
+
+  androidCompile dep.anko.appcompat
+  androidCompile dep.anko.common
+  androidCompile dep.anko.design
+  androidCompile dep.anko.gridlayout
+  androidCompile dep.anko.recyclerview
+  androidCompile dep.anko.sdk
+}

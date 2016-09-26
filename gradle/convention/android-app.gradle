@@ -1,0 +1,13 @@
+apply plugin: "com.android.application"
+apply recipe("android-common")
+
+dependencies {
+  compile dep.rx.java
+  compile dep.rx.lifecycle
+
+  compile dep.stetho.core
+
+  androidTestCompile dep.test.android.espresso.contrib
+  androidTestCompile dep.test.android.espresso.core
+  androidTestCompile dep.test.android.espresso.intents
+}
